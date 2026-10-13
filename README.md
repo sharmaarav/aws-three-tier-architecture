@@ -5,7 +5,7 @@ The application runs behind an internet-facing Application Load Balancer, uses a
 
 ## Architecture
 
-![Northstar Architecture](architecture/northstar-architecture.png)
+<img width="1672" height="941" alt="Northstar AWS Three-Tier Architecture (1)" src="https://github.com/user-attachments/assets/f3f7765d-0d6e-4688-ae00-324d37ee8467" />
 
 Core request path:
 
