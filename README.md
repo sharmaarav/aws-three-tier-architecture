@@ -3,6 +3,31 @@ Northstar is a hands-on AWS infrastructure project built to demonstrate secure n
 
 The application runs behind an internet-facing Application Load Balancer, uses a private EC2 application tier, and connects to a private Amazon RDS PostgreSQL database over SSL.
 
+## Repository layout
+
+```text
+app/                  Flask application and templates
+db/init.sql           PostgreSQL schema and sample customers
+tests/                Checks against a running stack
+docs/adr/             Architecture decision records
+docs/incidents/       Incident write-up template
+deploy/               Offline EC2 bundle (northstar-app.zip); not source
+Dockerfile            Application image
+docker-compose.yml    Local Flask and PostgreSQL stack
+requirements.txt      Runtime dependencies
+requirements-dev.txt  Test dependencies
+```
+
+Local stack:
+
+```bash
+docker compose up --build
+pip install -r requirements-dev.txt
+pytest
+```
+
+The Compose file publishes the app on port 8080. Tests use `BASE_URL` (default `http://localhost:8080`).
+
 ## Architecture
 
 <img width="1672" height="941" alt="Northstar AWS Three-Tier Architecture (1)" src="https://github.com/user-attachments/assets/f3f7765d-0d6e-4688-ae00-324d37ee8467" />
@@ -248,5 +273,4 @@ The final architecture successfully demonstrated:
 - Application and database failure isolation
 - Recovery after injected faults
 - A snapshot-based disaster recovery baseline
-d…]()
 
