@@ -1,0 +1,37 @@
+services:
+  web:
+    build: .
+    container_name: northstar-web
+    ports:
+      - "8080:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: legacydb
+      DB_USER: legacyuser
+      DB_PASSWORD: legacypass
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    container_name: northstar-db
+    environment:
+      POSTGRES_DB: legacydb
+      POSTGRES_USER: legacyuser
+      POSTGRES_PASSWORD: legacypass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U legacyuser -d legacydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
